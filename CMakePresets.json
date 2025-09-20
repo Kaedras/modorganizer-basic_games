@@ -1,16 +1,51 @@
 {
   "configurePresets": [
     {
-      "binaryDir": "${sourceDir}/vsbuild",
       "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+      "hidden": true,
+      "name": "vcpkg"
+    },
+    {
+      "binaryDir": "${sourceDir}/vsbuild",
       "generator": "Visual Studio 17 2022",
+      "inherits": ["vcpkg"],
       "name": "vs2022-windows"
+    },
+    {
+      "cacheVariables": {
+        "VCPKG_MANIFEST_FEATURES": {
+          "type": "STRING",
+          "value": "standalone"
+        }
+      },
+      "inherits": "vs2022-windows",
+      "name": "vs2022-windows-standalone"
+    },
+    {
+      "binaryDir": "${sourceDir}/build",
+      "generator": "Ninja Multi-Config",
+      "inherits": ["vcpkg"],
+      "name": "linux"
+    },
+    {
+      "cacheVariables": {
+        "VCPKG_MANIFEST_FEATURES": {
+          "type": "STRING",
+          "value": "standalone"
+        }
+      },
+      "inherits": "linux",
+      "name": "linux-standalone"
     }
   ],
   "buildPresets": [
     {
       "name": "vs2022-windows",
       "configurePreset": "vs2022-windows"
+    },
+    {
+      "name": "linux",
+      "configurePreset": "linux"
     }
   ],
   "version": 4
