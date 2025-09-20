@@ -2,11 +2,7 @@
 
 import platform
 import sys
-
-if platform.system() == "Windows":
-    import winreg
-else:
-    pass
+import winreg
 from pathlib import Path
 from typing import TypedDict, cast
 
