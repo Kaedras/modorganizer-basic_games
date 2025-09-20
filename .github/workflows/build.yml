@@ -8,7 +8,19 @@ on:
 
 jobs:
   build:
-    runs-on: windows-2022
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ windows-2022, ubuntu-24.04 ]
+        include:
+          - os: windows-2022
+            preset: vs2022-windows
+            build_dir: vsbuild
+          - os: ubuntu-24.04
+            preset: linux
+            build_dir: build
+
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/setup-python@v5
         with:
@@ -27,18 +39,18 @@ jobs:
         working-directory: ${{ github.workspace }}/build
         shell: pwsh
         run: |
-          cmake --preset vs2022-windows "-DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install" "-DVCPKG_MANIFEST_FEATURES=standalone"
+          cmake --preset ${{ matrix.preset }} "-DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install" "-DVCPKG_MANIFEST_FEATURES=standalone"
 
       - name: Build Basic Games Plugin
         working-directory: ${{ github.workspace }}/build
-        run: cmake --build vsbuild --config RelWithDebInfo
+        run: cmake --build ${{ matrix.build_dir }} --config RelWithDebInfo
 
       - name: Install Basic Games Plugin
         working-directory: ${{ github.workspace }}/build
-        run: cmake --install vsbuild --config RelWithDebInfo
+        run: cmake --install ${{ matrix.build_dir }} --config RelWithDebInfo
 
       - name: Upload Basic Games Plugin artifact
         uses: actions/upload-artifact@master
         with:
-          name: basic_games
+          name: basic_games_${{ runner.os }}
           path: ${{ github.workspace }}/install/bin/plugins
