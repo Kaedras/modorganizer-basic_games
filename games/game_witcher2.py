@@ -40,7 +40,7 @@ class Witcher2Game(BasicGame):
         super().init(organizer)
         self._register_feature(
             BasicGameSaveGameInfo(
-                lambda s: Path(str(s.parent) + "\\" + s.stem + "_640x360").with_suffix(
+                lambda s: Path(str(s.parent) + "/" + s.stem + "_640x360").with_suffix(
                     ".bmp"
                 )
             )

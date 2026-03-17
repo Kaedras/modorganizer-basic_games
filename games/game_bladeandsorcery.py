@@ -74,7 +74,7 @@ class BaSGame(BasicGame):
     GameName = "Blade & Sorcery"
     GameShortName = "bladeandsorcery"
     GameBinary = "BladeAndSorcery.exe"
-    GameDataPath = r"BladeAndSorcery_Data\\StreamingAssets\\Mods"
+    GameDataPath = "BladeAndSorcery_Data/StreamingAssets/Mods"
     GameDocumentsDirectory = "%DOCUMENTS%/My Games/BladeAndSorcery"
     GameSavesDirectory = "%GAME_DOCUMENTS%/Saves/Default"
     GameSaveExtension = "chr"
