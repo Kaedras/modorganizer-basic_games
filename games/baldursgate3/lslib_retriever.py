@@ -25,14 +25,6 @@ class LSLibRetriever:
                 "Divine.dll.config",
                 "Divine.exe",
                 "Divine.runtimeconfig.json",
-                "K4os.Compression.LZ4.dll",
-                "K4os.Compression.LZ4.Streams.dll",
-                "LSLib.dll",
-                "LSLibNative.dll",
-                "LZ4.dll",
-                "Newtonsoft.Json.dll",
-                "System.IO.Hashing.dll",
-                "ZstdSharp.dll",
             }
         }
 
@@ -86,6 +78,7 @@ class LSLibRetriever:
                             err.setText(
                                 "LSLib tools are required for the proper generation of the modsettings.xml file, file will not be generated"
                             )
+                            err.exec()
                             return False
                     else:
                         progress = self._utils.create_progress_window(
@@ -106,6 +99,7 @@ class LSLibRetriever:
                     new_msg.setText(
                         self._utils.tr("Latest version of LSLib already downloaded!")
                     )
+                    new_msg.exec()
 
         except Exception as e:
             qDebug(f"Download failed: {e}")
@@ -127,25 +121,29 @@ class LSLibRetriever:
             else:
                 dialog_message = "Extracting/Updating LSLib files..."
                 win_title = "Extracting LSLib"
-            x_progress = self._utils.create_progress_window(
-                win_title, len(self._needed_lslib_files), msg=dialog_message
-            )
             with zipfile.ZipFile(zip_path, "r") as zip_ref:
-                for file in self._needed_lslib_files:
-                    if downloaded or not file.exists():
-                        shutil.move(
-                            zip_ref.extract(
-                                f"Packed/Tools/{file.name}", self._utils.tools_dir
-                            ),
-                            file,
-                        )
+                names = list(
+                    filter(
+                        lambda name: name.startswith("Packed/Tools"), zip_ref.namelist()
+                    )
+                )
+                qDebug(f"found files: {','.join(names)}")
+                x_progress = self._utils.create_progress_window(
+                    win_title, len(names), msg=dialog_message
+                )
+                for file in names:
+                    shutil.move(
+                        zip_ref.extract(file, self._utils.tools_dir),
+                        self._utils.tools_dir,
+                    )
                     x_progress.setValue(x_progress.value() + 1)
                     QApplication.processEvents()
                     if x_progress.wasCanceled():
+                        x_progress.close()
                         qWarning("processing canceled by user")
                         return False
-            x_progress.close()
-            shutil.rmtree(self._utils.tools_dir / "Packed", ignore_errors=True)
+                x_progress.close()
+                shutil.rmtree(self._utils.tools_dir / "Packed", ignore_errors=True)
         except Exception as e:
             qDebug(f"Extraction failed: {e}")
             err = QMessageBox(self._utils.main_window)

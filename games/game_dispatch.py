@@ -10,7 +10,7 @@ from ..basic_game import BasicGame
 from ..steam_utils import find_steam_path
 
 
-class FantasyLifeIModDataChecker(BasicModDataChecker):
+class DispatchModDataChecker(BasicModDataChecker):
     def __init__(self):
         super().__init__(
             GlobPatterns(
@@ -25,23 +25,23 @@ class FantasyLifeIModDataChecker(BasicModDataChecker):
         )
 
 
-class FantasyLifeI(BasicGame, mobase.IPluginFileMapper):
-    Name = "Fantasy Life I Support Plugin"
-    Author = "AmeliaCute"
-    Version = "0.2.2"
+class Dispatch(BasicGame, mobase.IPluginFileMapper):
+    Name = "Dispatch Support Plugin"
+    Author = "Syer10"
+    Version = "0.1.0"
 
-    GameName = "FANTASY LIFE i"
-    GameShortName = "fantasylifei"
-    GameNexusName = "fantasylifeithegirlwhostealstime"
-    GameValidShortNames = ["fli"]
+    GameName = "Dispatch"
+    GameShortName = "dispatch"
+    GameNexusName = "dispatch"
+    GameValidShortNames = []
 
-    GameDataPath = "Game/Content/"
-    GameBinary = "Game/Binaries/Win64/NFL1-Win64-Shipping.exe"
-    GameSteamId = 2993780
+    GameDataPath = "Dispatch/Content/"
+    GameBinary = "Dispatch/Binaries/Win64/Dispatch-Win64-Shipping.exe"
+    GameSteamId = 2592160
 
     GameSupportURL = (
         r"https://github.com/ModOrganizer2/modorganizer-basic_games/wiki/"
-        "Game:-Fantasy-Life-I:-The-Girl-Who-Steals-Time"
+        "Game:-Dispatch"
     )
 
     def __init__(self):
@@ -50,13 +50,13 @@ class FantasyLifeI(BasicGame, mobase.IPluginFileMapper):
 
     def init(self, organizer: mobase.IOrganizer) -> bool:
         super().init(organizer)
-        self._register_feature(FantasyLifeIModDataChecker())
+        self._register_feature(DispatchModDataChecker())
         self._register_feature(BasicLocalSavegames(self))
         return True
 
     def executables(self):
         return [
-            mobase.ExecutableInfo("Fantasy Life I", self.GameBinary),
+            mobase.ExecutableInfo("Dispatch", self.GameBinary),
         ]
 
     ## SAVE
@@ -75,7 +75,7 @@ class FantasyLifeI(BasicGame, mobase.IPluginFileMapper):
             except ValueError:
                 continue
 
-            cloudSaves = child.joinpath("2993780/remote")
+            cloudSaves = child.joinpath("2592160/remote")
             if cloudSaves.exists() and cloudSaves.is_dir():
                 return str(cloudSaves)
         return None
@@ -94,7 +94,7 @@ class FantasyLifeI(BasicGame, mobase.IPluginFileMapper):
     ## MAPPING
 
     def exeDirectory(self) -> QDir:
-        return QDir(QDir(self.gameDirectory()).filePath("Game/Binaries/Win64"))
+        return QDir(QDir(self.gameDirectory()).filePath("Dispatch/Binaries/Win64"))
 
     def mappings(self) -> list[mobase.Mapping]:
         return [

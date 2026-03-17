@@ -290,10 +290,11 @@ class ValheimWorldSaveGame(ValheimSaveGame):
 class ValheimGame(BasicGame):
     Name = "Valheim Support Plugin"
     Author = "Zash"
-    Version = "1.2.2"
+    Version = "1.3"
 
     GameName = "Valheim"
     GameShortName = "valheim"
+    GameThunderstoreName = "valheim"
     GameNexusId = 3667
     GameSteamId = [892970, 896660, 1223920]
     GameBinary = "valheim.exe"
@@ -333,6 +334,9 @@ class ValheimGame(BasicGame):
                         #
                         "AdvancedBuilder",
                     ],
+                    ignore=[
+                        "*.mohidden",
+                    ],
                     delete=[
                         "*.txt",
                         "*.md",
@@ -365,7 +369,7 @@ class ValheimGame(BasicGame):
                 )
             )
         )
-        self._register_feature(BasicLocalSavegames(self.savesDirectory()))
+        self._register_feature(BasicLocalSavegames(self))
         self._overwrite_sync = OverwriteSync(organizer=self._organizer, game=self)
         self._register_event_handler()
         return True
