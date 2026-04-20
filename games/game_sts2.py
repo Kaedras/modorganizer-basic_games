@@ -30,7 +30,7 @@ class SlayTheSpire2ModDataChecker(BasicModDataChecker):
 class SlayTheSpire2Game(BasicGame):
     Name = "Slay the Spire 2 Support Plugin"
     Author = "Azlle"
-    Version = "1.0.0"
+    Version = "1.0.1"
 
     GameName = "Slay the Spire 2"
     GameShortName = "slaythespire2"
@@ -45,6 +45,11 @@ class SlayTheSpire2Game(BasicGame):
         super().init(organizer)
         self._register_feature(SlayTheSpire2ModDataChecker())
         return True
+
+    def initializeProfile(self, directory: QDir, settings: mobase.ProfileSetting):
+        mods_path = Path(self.dataDirectory().absolutePath())
+        mods_path.mkdir(exist_ok=True)
+        super().initializeProfile(directory, settings)
 
     def savesDirectory(self) -> QDir:
         docs = QDir(self.documentsDirectory())
