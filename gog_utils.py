@@ -1,11 +1,17 @@
 # Code adapted from EzioTheDeadPoet / erri120:
 #     https://github.com/ModOrganizer2/modorganizer-basic_games/pull/5
 
-import winreg
+import sys
 from pathlib import Path
+
+if sys.platform == "win32":
+    import winreg
 
 
 def find_games() -> dict[str, Path]:
+    if sys.platform == "linux":
+        return {}
+
     # List the game IDs from the registry:
     game_ids: list[str] = []
     try:

@@ -1,12 +1,13 @@
 # Code greatly inspired by https://github.com/LostDragonist/steam-library-setup-tool
 
-import platform
 import sys
-import winreg
 from pathlib import Path
 from typing import TypedDict, cast
 
 import vdf  # pyright: ignore[reportMissingTypeStubs]
+
+if sys.platform == "win32":
+    import winreg
 
 
 class SteamGame:
@@ -144,7 +145,7 @@ def find_steam_path() -> Path | None:
     Returns:
         The Steam path, or None if Steam is not installed.
     """
-    if platform.system() == "Windows":
+    if sys.platform == "win32":
         try:
             with winreg.OpenKey(
                 winreg.HKEY_CURRENT_USER, "Software\\Valve\\Steam"

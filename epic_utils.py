@@ -5,9 +5,11 @@ import itertools
 import json
 import os
 import sys
-import winreg
 from collections.abc import Iterable
 from pathlib import Path
+
+if sys.platform == "win32":
+    import winreg
 
 ErrorList = list[tuple[str, Exception]]
 
@@ -15,6 +17,8 @@ ErrorList = list[tuple[str, Exception]]
 def find_epic_games(
     errors: ErrorList | None = None,
 ) -> Iterable[tuple[str, Path]]:
+    if sys.platform == "linux":
+        return {}
     try:
         with winreg.OpenKey(
             winreg.HKEY_LOCAL_MACHINE,
