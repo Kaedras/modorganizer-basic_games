@@ -17,7 +17,7 @@ ErrorList = list[tuple[str, Exception]]
 def find_epic_games(
     errors: ErrorList | None = None,
 ) -> Iterable[tuple[str, Path]]:
-    if sys.platform == "linux":
+    if sys.platform != "win32":
         return {}
     try:
         with winreg.OpenKey(
