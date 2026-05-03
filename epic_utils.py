@@ -8,9 +8,6 @@ import sys
 from collections.abc import Iterable
 from pathlib import Path
 
-if sys.platform == "win32":
-    import winreg
-
 ErrorList = list[tuple[str, Exception]]
 
 
@@ -19,6 +16,9 @@ def find_epic_games(
 ) -> Iterable[tuple[str, Path]]:
     if sys.platform != "win32":
         return {}
+
+    import winreg
+
     try:
         with winreg.OpenKey(
             winreg.HKEY_LOCAL_MACHINE,

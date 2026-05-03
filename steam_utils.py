@@ -6,9 +6,6 @@ from typing import TypedDict, cast
 
 import vdf  # pyright: ignore[reportMissingTypeStubs]
 
-if sys.platform == "win32":
-    import winreg
-
 
 class SteamGame:
     def __init__(self, appid: str, installdir: str):
@@ -146,6 +143,8 @@ def find_steam_path() -> Path | None:
         The Steam path, or None if Steam is not installed.
     """
     if sys.platform == "win32":
+        import winreg
+
         try:
             with winreg.OpenKey(
                 winreg.HKEY_CURRENT_USER, "Software\\Valve\\Steam"

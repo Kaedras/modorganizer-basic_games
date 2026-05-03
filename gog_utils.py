@@ -4,13 +4,12 @@
 import sys
 from pathlib import Path
 
-if sys.platform == "win32":
-    import winreg
-
 
 def find_games() -> dict[str, Path]:
-    if sys.platform == "linux":
+    if sys.platform != "win32":
         return {}
+
+    import winreg
 
     # List the game IDs from the registry:
     game_ids: list[str] = []
