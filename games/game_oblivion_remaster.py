@@ -1,7 +1,7 @@
 import json
 import os.path
 import shutil
-import winreg
+import sys
 from enum import IntEnum, auto
 from pathlib import Path
 from typing import cast
@@ -19,6 +19,12 @@ from .oblivion_remaster.ue4ss.widget import UE4SSTabWidget
 
 
 def getLootPath() -> Path | None:
+    if sys.platform != "win32":
+        # todo: implement this
+        return None
+
+    import winreg
+
     """
     Parse the LOOT path using either the modern InnoSetup registry entries (local vs. global installs) or the
     old registry path.
@@ -74,15 +80,15 @@ class OblivionRemasteredGame(
     GameNexusId = 7587
     GameSteamId = 2623190
     GameBinary = "OblivionRemastered.exe"
-    GameDataPath = r"%GAME_PATH%\OblivionRemastered\Content\Dev\ObvData\Data"
-    GameDocumentsDirectory = r"%GAME_PATH%\OblivionRemastered\Content\Dev\ObvData"
+    GameDataPath = r"%GAME_PATH%/OblivionRemastered/Content/Dev/ObvData/Data"
+    GameDocumentsDirectory = r"%GAME_PATH%/OblivionRemastered/Content/Dev/ObvData"
     UserHome = QStandardPaths.writableLocation(
         QStandardPaths.StandardLocation.HomeLocation
     )
     # Oblivion Remastered does not use the expanded Documents path but instead always uses the
     # base user directory path, even when this disagrees with Windows.
-    MyDocumentsDirectory = rf"{UserHome}\Documents\My Games\{GameName}"
-    GameSavesDirectory = rf"{MyDocumentsDirectory}\Saved\SaveGames"
+    MyDocumentsDirectory = rf"{UserHome}/Documents/My Games/{GameName}"
+    GameSavesDirectory = rf"{MyDocumentsDirectory}/Saved/SaveGames"
     GameSaveExtension = "sav"
     GameSupportURL = (
         r"https://github.com/ModOrganizer2/modorganizer-basic_games/wiki/"
@@ -238,10 +244,10 @@ class OblivionRemasteredGame(
     ) -> None:
         if settings & mobase.ProfileSetting.CONFIGURATION:
             game_ini_file = self.gameDirectory().absoluteFilePath(
-                r"OblivionRemastered\Content\Dev\ObvData\Oblivion.ini"
+                r"OblivionRemastered/Content/Dev/ObvData/Oblivion.ini"
             )
             game_default_ini = self.gameDirectory().absoluteFilePath(
-                r"OblivionRemastered\Content\Dev\ObvData\Oblivion_default.ini"
+                r"OblivionRemastered/Content/Dev/ObvData/Oblivion_default.ini"
             )
             profile_ini = directory.absoluteFilePath(
                 QFileInfo("Oblivion.ini").fileName()
