@@ -415,6 +415,10 @@ class BasicGame(mobase.IPluginGame):
     # Path to the game, as set by MO2:
     _gamePath: str
 
+    if sys.platform != "win32":
+        # Path to wine prefix
+        _prefixPath: str
+
     def __init__(self):
         super(BasicGame, self).__init__()
 
@@ -666,3 +670,8 @@ class BasicGame(mobase.IPluginGame):
 
     def savesDirectory(self) -> QDir:
         return self._mappings.savesDirectory.get()
+
+    if sys.platform != "win32":
+
+        def setPrefixPath(self, path: Path | str) -> None:
+            self._prefixPath = str(path)
