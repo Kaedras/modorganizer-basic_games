@@ -1,11 +1,12 @@
 from __future__ import annotations
 
+import os.path
 import shutil
 import sys
 from pathlib import Path
 from typing import Callable, Generic, TypeVar
 
-from PyQt6.QtCore import QDir, QFileInfo, QStandardPaths
+from PyQt6.QtCore import QDir, QFileInfo, QStandardPaths, qWarning
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QMessageBox
 
@@ -23,16 +24,12 @@ def replace_variables(value: str, game: BasicGame) -> str:
     if value.find("%DOCUMENTS%") != -1:
         value = value.replace(
             "%DOCUMENTS%",
-            QStandardPaths.writableLocation(
-                QStandardPaths.StandardLocation.DocumentsLocation
-            ),
+            game._documentsLocation(),
         )
     if value.find("%USERPROFILE%") != -1:
         value = value.replace(
             "%USERPROFILE%",
-            QStandardPaths.writableLocation(
-                QStandardPaths.StandardLocation.HomeLocation
-            ),
+            game._homeLocation(),
         )
     if value.find("%GAME_DOCUMENTS%") != -1:
         value = value.replace(
@@ -218,18 +215,14 @@ class BasicGameMappings:
     supportURL: BasicGameMapping[str]
 
     @staticmethod
-    def _default_documents_directory(game: mobase.IPluginGame):
+    def _default_documents_directory(game: BasicGame):
         folders = [
             "{}/My Games/{}".format(
-                QStandardPaths.writableLocation(
-                    QStandardPaths.StandardLocation.DocumentsLocation
-                ),
+                game._documentsLocation(),
                 game.gameName(),
             ),
             "{}/{}".format(
-                QStandardPaths.writableLocation(
-                    QStandardPaths.StandardLocation.DocumentsLocation
-                ),
+                game._documentsLocation(),
                 game.gameName(),
             ),
         ]
@@ -426,6 +419,9 @@ class BasicGame(mobase.IPluginGame):
             self._fromName = self.__class__.__name__
 
         self._gamePath = ""
+
+        if sys.platform != "win32":
+            self._prefixPath = ""
 
         self._mappings: BasicGameMappings = BasicGameMappings(self)
 
@@ -671,7 +667,63 @@ class BasicGame(mobase.IPluginGame):
     def savesDirectory(self) -> QDir:
         return self._mappings.savesDirectory.get()
 
+    # helper functions
+    def _homeLocation(self) -> str:
+        if sys.platform != "win32" and self._prefixPath:
+            return self._getUserProfilePath()
+        return QStandardPaths.writableLocation(
+            QStandardPaths.StandardLocation.HomeLocation
+        )
+
+    def _documentsLocation(self) -> str:
+        if sys.platform != "win32" and self._prefixPath:
+            return str(Path(self._getUserProfilePath()) / "Documents")
+        return QStandardPaths.writableLocation(
+            QStandardPaths.StandardLocation.DocumentsLocation
+        )
+
     if sys.platform != "win32":
 
         def setPrefixPath(self, path: Path | str) -> None:
             self._prefixPath = str(path)
+
+        def _getUserProfilePath(self) -> str:
+            if self._prefixPath:
+                path = Path(self._prefixPath)
+                # handle proton
+                if os.path.exists(path / "pfx"):
+                    return str(path / "pfx/drive_c/users/steamuser")
+
+                # handle wine
+                usersDir = path / "drive_c/users"
+                # the `users` directory has two subdirectories: public and <user>
+                candidates = []
+                for userDir in usersDir.iterdir():
+                    if userDir.is_dir() and userDir.name.lower() != "public":
+                        candidates.append(userDir)
+
+                if len(candidates) == 1:
+                    return str(candidates[0])
+
+                # parse user.reg as fallback
+                # this should probably not happen, but has been implemented just in case
+                qWarning(f"Falling back to parsing {str(path / 'user.reg')}")
+                with open(path / "user.reg") as fp:
+                    # look for "USERPROFILE"="<path>"
+                    lines = fp.readlines()
+                    # parse in reverse because the line we want is usually the last one
+                    for line in reversed(lines):
+                        line = line.strip()
+                        if line.startswith('"USERPROFILE"='):
+                            # example line: "USERPROFILE"="C:\\users\\<username>"
+                            userprofile = line.removeprefix('"USERPROFILE"="')
+                            userprofile = userprofile.removesuffix('"')
+                            userprofile = userprofile.replace("\\\\", "/")
+                            userprofile = userprofile.replace(
+                                "C:", str(path / "drive_c")
+                            )
+                            return userprofile
+
+            return QStandardPaths.writableLocation(
+                QStandardPaths.StandardLocation.HomeLocation
+            )
