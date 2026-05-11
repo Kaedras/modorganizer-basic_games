@@ -10,3 +10,4 @@ venv
 mob.log
 vsbuild
 lib
+build
