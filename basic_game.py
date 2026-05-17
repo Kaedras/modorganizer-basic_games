@@ -249,7 +249,9 @@ class BasicGameMappings:
             if qdir.exists():
                 return qdir
 
-        return QDir()
+        # Return a QDir pointing to a non-existing path because the default QDir constructor points to the current workdir, which can be $HOME on linux and causes MO to freeze as it can contain millions of files
+        # TODO: check if this change causes issues
+        return QDir("/INVALID")
 
     # Game mappings:
     def __init__(self, game: BasicGame):
