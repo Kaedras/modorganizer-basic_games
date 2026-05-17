@@ -24,12 +24,12 @@ def replace_variables(value: str, game: BasicGame) -> str:
     if value.find("%DOCUMENTS%") != -1:
         value = value.replace(
             "%DOCUMENTS%",
-            game._documentsLocation(),
+            game.documentsLocation(),
         )
     if value.find("%USERPROFILE%") != -1:
         value = value.replace(
             "%USERPROFILE%",
-            game._homeLocation(),
+            game.homeLocation(),
         )
     if value.find("%GAME_DOCUMENTS%") != -1:
         value = value.replace(
@@ -236,11 +236,11 @@ class BasicGameMappings:
     def _default_documents_directory(game: BasicGame):
         folders = [
             "{}/My Games/{}".format(
-                game._documentsLocation(),
+                game.documentsLocation(),
                 game.gameName(),
             ),
             "{}/{}".format(
-                game._documentsLocation(),
+                game.documentsLocation(),
                 game.gameName(),
             ),
         ]
@@ -688,14 +688,14 @@ class BasicGame(mobase.IPluginGame):
         return self._mappings.savesDirectory.get()
 
     # helper functions
-    def _homeLocation(self) -> str:
+    def homeLocation(self) -> str:
         if sys.platform != "win32" and self._prefixPath:
             return self._getUserProfilePath()
         return QStandardPaths.writableLocation(
             QStandardPaths.StandardLocation.HomeLocation
         )
 
-    def _documentsLocation(self) -> str:
+    def documentsLocation(self) -> str:
         if sys.platform != "win32" and self._prefixPath:
             return str(Path(self._getUserProfilePath()) / "Documents")
         return QStandardPaths.writableLocation(
