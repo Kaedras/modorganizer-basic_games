@@ -22,7 +22,7 @@ class MSFS2020Game(BasicGame):
 
     def dataDirectory(self) -> QDir:
         # Find and use package path specified in Asobo engine options
-        AppDataPath = os.path.expandvars(r"%APPDATA%\Microsoft Flight Simulator")
+        AppDataPath = os.path.expandvars(r"%APPDATA%/Microsoft Flight Simulator")
         UserCfgPath = os.path.join(AppDataPath, "UserCfg.opt")
         InstalledPackagesPathPattern = re.compile(
             r'InstalledPackagesPath\s*=\s*"(.*)"', re.IGNORECASE

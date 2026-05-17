@@ -235,9 +235,7 @@ def getMetadata(savepath: Path, save: mobase.ISaveGame) -> Mapping[str, str]:
     }
 
 
-PSTART_MENU = (
-    str(os.getenv("ProgramData")) + "\\Microsoft\\Windows\\Start Menu\\Programs"
-)
+PSTART_MENU = str(os.getenv("ProgramData")) + "/Microsoft/Windows/Start Menu/Programs"
 
 
 class BlackAndWhite2Game(BasicGame):
@@ -257,7 +255,7 @@ class BlackAndWhite2Game(BasicGame):
         "Game:-Black-&-White-2"
     )
 
-    _program_link = PSTART_MENU + "\\Black & White 2\\Black & White® 2.lnk"
+    _program_link = PSTART_MENU + "/Black & White 2/Black & White® 2.lnk"
 
     def init(self, organizer: mobase.IOrganizer) -> bool:
         BasicGame.init(self, organizer)
@@ -336,6 +334,6 @@ class BOTGGame(BlackAndWhite2Game):
     GameSavesDirectory = "%GAME_DOCUMENTS%/Profiles"
 
     _program_link = (
-        PSTART_MENU + "\\Black & White 2 Battle of the Gods"
-        "\\Black & White® 2 Battle of the Gods.lnk"
+        PSTART_MENU + "/Black & White 2 Battle of the Gods"
+        "/Black & White® 2 Battle of the Gods.lnk"
     )

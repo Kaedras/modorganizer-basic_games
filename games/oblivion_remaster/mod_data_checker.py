@@ -264,7 +264,7 @@ class OblivionRemasteredModDataChecker(mobase.ModDataChecker):
             if entry.parent() == filetree and entry.isFile():
                 name = entry.name().casefold()
                 if name.endswith(".pak"):
-                    # Move all pak|ucas|utoc files into "Paks\~mods"
+                    # Move all pak|ucas|utoc files into "Paks/~mods"
                     paks_dir = self.get_dir(filetree, "Paks/~mods")
                     pak_files: list[mobase.FileTreeEntry] = []
                     for file in _parent(entry):
@@ -278,7 +278,7 @@ class OblivionRemasteredModDataChecker(mobase.ModDataChecker):
                     for pak_file in pak_files:
                         pak_file.moveTo(paks_dir)
                 elif name.endswith(".bk2"):
-                    # Top-level bk2 files should be moved to "Movies\Modern"
+                    # Top-level bk2 files should be moved to "Movies/Modern"
                     movies_dir = self.get_dir(filetree, "Movies/Modern")
                     movie_files: list[mobase.FileTreeEntry] = []
                     for file in _parent(entry):
@@ -361,7 +361,7 @@ class OblivionRemasteredModDataChecker(mobase.ModDataChecker):
                     data_dir.merge(next_dir)
                     self.detach_parents(next_dir)
                 elif name.endswith(".pak"):
-                    # Loose pak files most likely should be installed to 'Paks\~mods' but check the parent directory
+                    # Loose pak files most likely should be installed to 'Paks/~mods' but check the parent directory
                     paks_dir = self.get_dir(main_filetree, "Paks")
                     if next_dir.name().casefold() == "paks":
                         paks_dir.merge(next_dir)

@@ -80,7 +80,7 @@ class SilksongGame(BasicGame):
     GameBinary = r"Hollow Knight Silksong.exe"
     GameDataPath = ""
     GameSavesDirectory = (
-        r"%USERPROFILE%\AppData\LocalLow\Team Cherry\Hollow Knight Silksong"
+        r"%USERPROFILE%/AppData/LocalLow/Team Cherry/Hollow Knight Silksong"
     )
     GameSupportURL = (
         r"https://github.com/ModOrganizer2/modorganizer-basic_games/wiki/"

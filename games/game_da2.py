@@ -10,9 +10,9 @@ class DA2Game(BasicGame):
 
     GameName = "Dragon Age 2"
     GameShortName = "dragonage2"
-    GameBinary = r"bin_ship\DragonAge2.exe"
-    GameDataPath = r"%DOCUMENTS%\BioWare\Dragon Age 2\packages\core\override"
-    GameSavesDirectory = r"%DOCUMENTS%\BioWare\Dragon Age 2\Characters"
+    GameBinary = r"bin_ship/DragonAge2.exe"
+    GameDataPath = r"%DOCUMENTS%/BioWare/Dragon Age 2/packages/core/override"
+    GameSavesDirectory = r"%DOCUMENTS%/BioWare/Dragon Age 2/Characters"
     GameSaveExtension = "das"
     GameSteamId = 1238040
     GameOriginManifestIds = ["OFB-EAST:59474", "DR:201797000"]

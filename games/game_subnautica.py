@@ -103,11 +103,11 @@ class SubnauticaGame(BasicGame, mobase.IPluginFileMapper):
         r"https://github.com/ModOrganizer2/modorganizer-basic_games/wiki/"
         "Game:-Subnautica"
     )
-    GameSavesDirectory = r"%GAME_PATH%\SNAppData\SavedGames"
+    GameSavesDirectory = r"%GAME_PATH%/SNAppData/SavedGames"
 
     _game_extra_save_paths = [
-        r"%USERPROFILE%\Appdata\LocalLow\Unknown Worlds"
-        r"\Subnautica\Subnautica\SavedGames"
+        r"%USERPROFILE%/Appdata/LocalLow/Unknown Worlds"
+        r"/Subnautica/Subnautica/SavedGames"
     ]
 
     _forced_libraries = ["winhttp.dll"]
