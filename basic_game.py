@@ -4,7 +4,7 @@ import os.path
 import shutil
 import sys
 from pathlib import Path
-from typing import Callable, Generic, TypeVar
+from typing import Callable, Generator, Generic, TypeVar
 
 from PyQt6.QtCore import QDir, QFileInfo, QStandardPaths, qWarning
 from PyQt6.QtGui import QIcon
@@ -39,6 +39,24 @@ def replace_variables(value: str, game: BasicGame) -> str:
         value = value.replace("%GAME_PATH%", game.gameDirectory().absolutePath())
 
     return value
+
+
+def read_lines_reverse(filename: Path) -> Generator[str]:
+    """Read a text file line by line from end to beginning"""
+    with open(str(filename), "r") as file:
+        file.seek(0, os.SEEK_END)
+        position = file.tell()
+        line = ""
+        while position >= 0:
+            file.seek(position)
+            next_char = file.read(1)
+            if next_char == "\n":
+                yield line[::-1]
+                line = ""
+            else:
+                line += next_char
+            position -= 1
+        yield line[::-1]
 
 
 _T = TypeVar("_T")
@@ -708,21 +726,17 @@ class BasicGame(mobase.IPluginGame):
                 # parse user.reg as fallback
                 # this should probably not happen, but has been implemented just in case
                 qWarning(f"Falling back to parsing {str(path / 'user.reg')}")
-                with open(path / "user.reg") as fp:
+                import re
+
+                userprofile_pattern = re.compile(r'"USERPROFILE"="([^\"]+)"')
+                for line in read_lines_reverse(path / "user.reg"):
                     # look for "USERPROFILE"="<path>"
-                    lines = fp.readlines()
-                    # parse in reverse because the line we want is usually the last one
-                    for line in reversed(lines):
-                        line = line.strip()
-                        if line.startswith('"USERPROFILE"='):
-                            # example line: "USERPROFILE"="C:\\users\\<username>"
-                            userprofile = line.removeprefix('"USERPROFILE"="')
-                            userprofile = userprofile.removesuffix('"')
-                            userprofile = userprofile.replace("\\\\", "/")
-                            userprofile = userprofile.replace(
-                                "C:", str(path / "drive_c")
-                            )
-                            return userprofile
+                    match = userprofile_pattern.search(line)
+                    if match:
+                        userprofile = match.group(1)
+                        userprofile = userprofile.replace("\\\\", "/")
+                        userprofile = userprofile.replace("C:", str(path / "drive_c"))
+                        return userprofile
 
             return QStandardPaths.writableLocation(
                 QStandardPaths.StandardLocation.HomeLocation
