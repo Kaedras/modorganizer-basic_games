@@ -38,6 +38,12 @@ def replace_variables(value: str, game: BasicGame) -> str:
     if value.find("%GAME_PATH%") != -1:
         value = value.replace("%GAME_PATH%", game.gameDirectory().absolutePath())
 
+    if value.find("%GENERIC_CONFIG_LOCATION%") != -1:
+        value = value.replace("%GENERIC_CONFIG_LOCATION%", game.genericConfigLocation())
+
+    if value.find("%GENERIC_DATA_LOCATION%") != -1:
+        value = value.replace("%GENERIC_DATA_LOCATION%", game.genericDataLocation())
+
     return value
 
 
@@ -381,6 +387,42 @@ class BasicGameMappings:
             game, "GameSupportURL", "supportURL", default=lambda g: ""
         )
 
+        if sys.platform != "win32":
+            # replace GameBinary with GameBinaryLinux if the former does not exist
+            # alternatively strip the `.exe` extension if the latter is not set
+            # this is also used for detecting native linux games
+            if not os.path.exists(game.gameDirectory().exists(game.binaryName())):
+                if hasattr(game, "GameBinaryLinux"):
+                    self.binaryName = BasicGameMapping(
+                        game, "GameBinaryLinux", "binaryName"
+                    )
+                else:
+                    game.GameBinary.removesuffix(".exe")
+                    self.binaryName = BasicGameMapping(game, "GameBinary", "binaryName")
+
+                if os.path.exists(game.gameDirectory().exists(game.binaryName())):
+                    # game is a native linux game
+                    game._isNativeLinuxVersion = True
+
+            if game.isNativeLinuxVersion():
+                # replace launcherName
+                if hasattr(game, "GameLauncherLinux"):
+                    self.launcherName = BasicGameMapping(
+                        game,
+                        "GameLauncherLinux",
+                        "getLauncherName",
+                        default=lambda g: "",
+                    )
+                # replace documentsDirectory
+                if hasattr(game, "GameDocumentsDirectoryLinux"):
+                    self.documentsDirectory = BasicGameMapping(
+                        game,
+                        "GameDocumentsDirectoryLinux",
+                        "documentsDirectory",
+                        apply_fn=lambda s: QDir(s) if isinstance(s, str) else s,
+                        default=BasicGameMappings._default_documents_directory,
+                    )
+
 
 class BasicGame(mobase.IPluginGame):
     """This class implements some methods from mobase.IPluginGame
@@ -431,6 +473,8 @@ class BasicGame(mobase.IPluginGame):
     if sys.platform != "win32":
         # Path to wine prefix
         _prefixPath: str
+        # Whether this is a native linux game
+        _isNativeLinuxVersion: bool
 
     def __init__(self):
         super(BasicGame, self).__init__()
@@ -442,6 +486,7 @@ class BasicGame(mobase.IPluginGame):
 
         if sys.platform != "win32":
             self._prefixPath = ""
+            self._isNativeLinuxVersion = False
 
         self._mappings: BasicGameMappings = BasicGameMappings(self)
 
@@ -689,14 +734,28 @@ class BasicGame(mobase.IPluginGame):
 
     # helper functions
     def homeLocation(self) -> str:
-        if sys.platform != "win32" and self._prefixPath:
+        if sys.platform != "win32" and not self._isNativeLinuxVersion:
             return self._getUserProfilePath()
         return QStandardPaths.writableLocation(
             QStandardPaths.StandardLocation.HomeLocation
         )
 
+    def genericDataLocation(self) -> str:
+        if sys.platform != "win32" and not self._isNativeLinuxVersion:
+            return self._getUserProfilePath() + "/AppData/Local/"
+        return QStandardPaths.writableLocation(
+            QStandardPaths.StandardLocation.GenericDataLocation
+        )
+
+    def genericConfigLocation(self) -> str:
+        if sys.platform != "win32" and not self._isNativeLinuxVersion:
+            return self._getUserProfilePath() + "/AppData/Local/"
+        return QStandardPaths.writableLocation(
+            QStandardPaths.StandardLocation.GenericConfigLocation
+        )
+
     def documentsLocation(self) -> str:
-        if sys.platform != "win32" and self._prefixPath:
+        if sys.platform != "win32" and not self._isNativeLinuxVersion:
             return str(Path(self._getUserProfilePath()) / "Documents")
         return QStandardPaths.writableLocation(
             QStandardPaths.StandardLocation.DocumentsLocation
@@ -706,6 +765,9 @@ class BasicGame(mobase.IPluginGame):
 
         def setPrefixPath(self, path: Path | str) -> None:
             self._prefixPath = str(path)
+
+        def isNativeLinuxVersion(self) -> bool:
+            return self._isNativeLinuxVersion
 
         def _getUserProfilePath(self) -> str:
             if self._prefixPath:

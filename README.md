@@ -149,36 +149,41 @@ class Witcher3Game(BasicGame):
 
 ### List of valid keys
 
-| Name | Description | `IPluginGame` method | Python |
-|------|-------------|----------------------|--------|
-| Name | Name of the plugin | `name` | `str` |
-| Author | Author of the plugin | `author` | `str` |
-| Version | Version of the plugin | `version` | `str` or `mobase.VersionInfo` |
-| Description| Description (Optional) | `description` | `str` |
-| GameName | Name of the game, as displayed by MO2 | `gameName` | `str` |
-| GameShortName | Short name of the game | `gameShortName` | `str` |
-| GameNexusName| Nexus name of the game (Optional, default to `GameShortName`) | `gameNexusName` | `str` |
-| GameValidShortNames | Other valid short names (Optional) | `validShortNames` | `List[str]` or comma-separated list of values |
-| GameNexusId | Nexus ID of the game (Optional) | `nexusGameID` | `str` or `int` |
-| GameBinary | Name of the game executable, relative to the game path | `binaryName` | `str` |
-| GameLauncher | Name of the game launcher, relative to the game path  (Optional) | `getLauncherName` | `str` |
-| GameDataPath | Name of the folder containing mods, relative to game folder| `dataDirectory` | |
-| GameDocumentsDirectory | Documents directory (Optional) | `documentsDirectory` | `str` or `QDir` |
-| GameIniFiles | Config files in documents, for profile specific config (Optional) | `iniFiles` | `str` or `List[str]` |
-| GameSavesDirectory | Directory containing saves (Optional, default to `GameDocumentsDirectory`) | `savesDirectory` | `str` or `QDir` |
-| GameSaveExtension | Save file extension (Optional) `savegameExtension` | `str` |
-| GameSteamId | Steam ID of the game (Optional) | `steamAPPId` | `List[str]` or `str` or `int` |
-| GameGogId | GOG ID of the game (Optional) | `gogAPPId` | `List[str]` or `str` or `int` |
-| GameOriginManifestIds | Origin Manifest ID of the game (Optional) | `originManifestIds` | `List[str]` or `str` |
-| GameOriginWatcherExecutables | Executables to watch for Origin DRM (Optional) | `originWatcherExecutables` | `List[str]` or `str` |
-| GameEpicId | Epic ID (`AppName`) of the game (Optional) | `epicAPPId` | `List[str]` or `str` |
-| GameEaDesktopId | EA Desktop ID of the game (Optional) | `eaDesktopContentId` | `List[str]` or `str` or `int` |
+| Name                         | Description                                                                 | `IPluginGame` method | Python |
+|------------------------------|-----------------------------------------------------------------------------|----------------------|--------|
+| Name                         | Name of the plugin                                                          | `name` | `str` |
+| Author                       | Author of the plugin                                                        | `author` | `str` |
+| Version                      | Version of the plugin                                                       | `version` | `str` or `mobase.VersionInfo` |
+| Description                  | Description (Optional)                                                      | `description` | `str` |
+| GameName                     | Name of the game, as displayed by MO2                                       | `gameName` | `str` |
+| GameShortName                | Short name of the game                                                      | `gameShortName` | `str` |
+| GameNexusName                | Nexus name of the game (Optional, default to `GameShortName`)               | `gameNexusName` | `str` |
+| GameValidShortNames          | Other valid short names (Optional)                                          | `validShortNames` | `List[str]` or comma-separated list of values |
+| GameNexusId                  | Nexus ID of the game (Optional)                                             | `nexusGameID` | `str` or `int` |
+| GameBinary                   | Name of the game executable, relative to the game path                      | `binaryName` | `str` |
+| GameBinaryLinux              | Name of the game executable for linux, relative to the game path (Optional) | `binaryName` | `str` |
+| GameLauncher                 | Name of the game launcher, relative to the game path  (Optional)            | `getLauncherName` | `str` |
+| GameLauncherLinux            | Name of the game launcher for linux, relative to the game path  (Optional)  | `getLauncherName` | `str` |
+| GameDataPath                 | Name of the folder containing mods, relative to game folder                 | `dataDirectory` | |
+| GameDocumentsDirectory       | Documents directory (Optional)                                              | `documentsDirectory` | `str` or `QDir` |
+| GameDocumentsDirectoryLinux  | Documents directory for linux (Optional)                                    | `documentsDirectory` | `str` or `QDir` |
+| GameIniFiles                 | Config files in documents, for profile specific config (Optional)           | `iniFiles` | `str` or `List[str]` |
+| GameSavesDirectory           | Directory containing saves (Optional, default to `GameDocumentsDirectory`)  | `savesDirectory` | `str` or `QDir` |
+| GameSaveExtension            | Save file extension (Optional) `savegameExtension`                          | `str` |
+| GameSteamId                  | Steam ID of the game (Optional)                                             | `steamAPPId` | `List[str]` or `str` or `int` |
+| GameGogId                    | GOG ID of the game (Optional)                                               | `gogAPPId` | `List[str]` or `str` or `int` |
+| GameOriginManifestIds        | Origin Manifest ID of the game (Optional)                                   | `originManifestIds` | `List[str]` or `str` |
+| GameOriginWatcherExecutables | Executables to watch for Origin DRM (Optional)                              | `originWatcherExecutables` | `List[str]` or `str` |
+| GameEpicId                   | Epic ID (`AppName`) of the game (Optional)                                  | `epicAPPId` | `List[str]` or `str` |
+| GameEaDesktopId              | EA Desktop ID of the game (Optional)                                        | `eaDesktopContentId` | `List[str]` or `str` or `int` |
 
 You can use the following variables for `str`:
 
 - `%DOCUMENTS%` will be replaced by the standard *Documents* folder.
 - `%GAME_PATH%` will be replaced by the path to the game folder.
 - `%GAME_DOCUMENTS%` will be replaced by the value of `GameDocumentsDirectory`.
+- `%GENERIC_DATA_LOCATION%` will be replaced by the value of QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)
+- `%GENERIC_CONFIG_LOCATION%` will be replaced by the value of QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation)
 
 ## Extra features
 

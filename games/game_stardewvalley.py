@@ -33,8 +33,10 @@ class StardewValleyGame(BasicGame):
     GameSteamId = 413150
     GameGogId = 1453375253
     GameBinary = "Stardew Valley.exe"
+    GameBinaryLinux = "StardewValley"
     GameDataPath = "mods"
     GameDocumentsDirectory = "%DOCUMENTS%/StardewValley"
+    GameDocumentsDirectoryLinux = "%CONFIG_LOCATION%/StardewValley"
     GameSavesDirectory = "%GAME_DOCUMENTS%/Saves"
     GameSupportURL = (
         r"https://github.com/ModOrganizer2/modorganizer-basic_games/wiki/"
