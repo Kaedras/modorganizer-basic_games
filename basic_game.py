@@ -238,6 +238,11 @@ class BasicGameMappings:
     eaDesktopContentId: BasicGameOptionsMapping[str]
     supportURL: BasicGameMapping[str]
 
+    if sys.platform != "win32":
+        binaryNameLinux: BasicGameMapping[str]
+        launcherNameLinux: BasicGameMapping[str]
+        documentsDirectoryLinux: BasicGameMapping[QDir]
+
     @staticmethod
     def _default_documents_directory(game: BasicGame):
         folders = [
@@ -388,40 +393,21 @@ class BasicGameMappings:
         )
 
         if sys.platform != "win32":
-            # replace GameBinary with GameBinaryLinux if the former does not exist
-            # alternatively strip the `.exe` extension if the latter is not set
-            # this is also used for detecting native linux games
-            if not os.path.exists(game.gameDirectory().exists(game.binaryName())):
-                if hasattr(game, "GameBinaryLinux"):
-                    self.binaryName = BasicGameMapping(
-                        game, "GameBinaryLinux", "binaryName"
-                    )
-                else:
-                    game.GameBinary.removesuffix(".exe")
-                    self.binaryName = BasicGameMapping(game, "GameBinary", "binaryName")
-
-                if os.path.exists(game.gameDirectory().exists(game.binaryName())):
-                    # game is a native linux game
-                    game._isNativeLinuxVersion = True
-
-            if game.isNativeLinuxVersion():
-                # replace launcherName
-                if hasattr(game, "GameLauncherLinux"):
-                    self.launcherName = BasicGameMapping(
-                        game,
-                        "GameLauncherLinux",
-                        "getLauncherName",
-                        default=lambda g: "",
-                    )
-                # replace documentsDirectory
-                if hasattr(game, "GameDocumentsDirectoryLinux"):
-                    self.documentsDirectory = BasicGameMapping(
-                        game,
-                        "GameDocumentsDirectoryLinux",
-                        "documentsDirectory",
-                        apply_fn=lambda s: QDir(s) if isinstance(s, str) else s,
-                        default=BasicGameMappings._default_documents_directory,
-                    )
+            self.binaryNameLinux = BasicGameMapping(
+                game, "GameBinaryLinux", "binaryNameLinux", default=lambda g: ""
+            )
+            self.launcherNameLinux = BasicGameMapping(
+                game,
+                "GameLauncherLinux",
+                "getLauncherName",
+                default=lambda g: "",
+            )
+            self.documentsDirectoryLinux = BasicGameMapping(
+                game,
+                "GameDocumentsDirectoryLinux",
+                "documentsDirectoryLinux",
+                default=lambda g: self.documentsDirectory.get(),
+            )
 
 
 class BasicGame(mobase.IPluginGame):
@@ -623,9 +609,13 @@ class BasicGame(mobase.IPluginGame):
         return self._mappings.eaDesktopContentId.current()
 
     def binaryName(self) -> str:
+        if sys.platform != "win32" and self._isNativeLinuxVersion:
+            return self._mappings.binaryNameLinux.get()
         return self._mappings.binaryName.get()
 
     def getLauncherName(self) -> str:
+        if sys.platform != "win32" and self._isNativeLinuxVersion:
+            return self._mappings.launcherNameLinux.get()
         return self._mappings.launcherName.get()
 
     def getSupportURL(self) -> str:
@@ -726,7 +716,15 @@ class BasicGame(mobase.IPluginGame):
             if eadesktoppath == path:
                 self._mappings.eaDesktopContentId.set_value(eadesktopid)
 
+        if sys.platform != "win32":
+            if Path.exists(
+                path / self._mappings.binaryNameLinux.get()
+            ) and not Path.exists(path / self._mappings.binaryName.get()):
+                self._isNativeLinuxVersion = True
+
     def documentsDirectory(self) -> QDir:
+        if sys.platform != "win32" and self._isNativeLinuxVersion:
+            return self._mappings.documentsDirectoryLinux.get()
         return self._mappings.documentsDirectory.get()
 
     def savesDirectory(self) -> QDir:

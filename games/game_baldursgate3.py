@@ -25,6 +25,7 @@ class BG3Game(BasicGame, bg3_file_mapper.BG3FileMapper):
     GameValidShortNames = ["bg3"]
     GameLauncher = "Launcher/LariLauncher.exe"
     GameBinary = "bin/bg3.exe"
+    GameBinaryLinux = "bin/bg3"
     GameDataPath = ""
     GameDocumentsDirectory = "%GENERIC_DATA_LOCATION%/Larian Studios/Baldur's Gate 3"
     GameSavesDirectory = "%GAME_DOCUMENTS%/PlayerProfiles/Public/Savegames/Story"
