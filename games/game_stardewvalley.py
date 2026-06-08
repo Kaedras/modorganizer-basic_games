@@ -36,7 +36,7 @@ class StardewValleyGame(BasicGame):
     GameBinaryLinux = "StardewValley"
     GameDataPath = "mods"
     GameDocumentsDirectory = "%DOCUMENTS%/StardewValley"
-    GameDocumentsDirectoryLinux = "%CONFIG_LOCATION%/StardewValley"
+    GameDocumentsDirectoryLinux = "%GENERIC_CONFIG_LOCATION%/StardewValley"
     GameSavesDirectory = "%GAME_DOCUMENTS%/Saves"
     GameSupportURL = (
         r"https://github.com/ModOrganizer2/modorganizer-basic_games/wiki/"
@@ -50,10 +50,18 @@ class StardewValleyGame(BasicGame):
 
     def executables(self):
         return [
+            # windows executables
             mobase.ExecutableInfo(
                 "SMAPI", QFileInfo(self.gameDirectory(), "StardewModdingAPI.exe")
             ),
             mobase.ExecutableInfo(
                 "Stardew Valley", QFileInfo(self.gameDirectory(), "Stardew Valley.exe")
+            ),
+            # linux executables
+            mobase.ExecutableInfo(
+                "SMAPI", QFileInfo(self.gameDirectory(), "StardewModdingAPI")
+            ),
+            mobase.ExecutableInfo(
+                "Stardew Valley", QFileInfo(self.gameDirectory(), "StardewValley")
             ),
         ]
