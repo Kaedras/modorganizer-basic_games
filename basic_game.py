@@ -406,6 +406,7 @@ class BasicGameMappings:
                 game,
                 "GameDocumentsDirectoryLinux",
                 "documentsDirectoryLinux",
+                apply_fn=lambda s: QDir(s) if isinstance(s, str) else s,
                 default=lambda g: self.documentsDirectory.get(),
             )
 
