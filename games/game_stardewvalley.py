@@ -34,7 +34,7 @@ class StardewValleyGame(BasicGame):
     GameGogId = 1453375253
     GameBinary = "Stardew Valley.exe"
     GameBinaryLinux = "StardewValley"
-    GameDataPath = "mods"
+    GameDataPath = "Mods"
     GameDocumentsDirectory = "%DOCUMENTS%/StardewValley"
     GameDocumentsDirectoryLinux = "%GENERIC_CONFIG_LOCATION%/StardewValley"
     GameSavesDirectory = "%GAME_DOCUMENTS%/Saves"
