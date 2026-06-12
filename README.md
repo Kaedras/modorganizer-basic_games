@@ -182,8 +182,6 @@ You can use the following variables for `str`:
 - `%DOCUMENTS%` will be replaced by the standard *Documents* folder.
 - `%GAME_PATH%` will be replaced by the path to the game folder.
 - `%GAME_DOCUMENTS%` will be replaced by the value of `GameDocumentsDirectory`.
-- `%GENERIC_DATA_LOCATION%` will be replaced by the value of QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)
-- `%GENERIC_CONFIG_LOCATION%` will be replaced by the value of QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation)
 
 ## Extra features
 

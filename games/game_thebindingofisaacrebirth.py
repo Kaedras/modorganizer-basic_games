@@ -14,9 +14,11 @@ class TheBindingOfIsaacRebirthGame(BasicGame):
     GameBinary = "isaac-ng.exe"
     GameBinaryLinux = "run-x64.sh"
     GameDocumentsDirectory = "%DOCUMENTS%/My Games/Binding of Isaac Afterbirth+"
-    GameDocumentsDirectoryLinux = "%GENERIC_DATA_LOCATION%/binding of isaac afterbirth+"
+    GameDocumentsDirectoryLinux = (
+        "%USERPROFILE%/.local/share/binding of isaac afterbirth+"
+    )
     GameDataPath = "%DOCUMENTS%/My Games/Binding of Isaac Afterbirth+ Mods"
-    GameDataPathLinux = "%GENERIC_DATA_LOCATION%/binding of isaac afterbirth+ mods"
+    GameDataPathLinux = "%USERPROFILE%/.local/share/binding of isaac afterbirth+ mods"
     GameSupportURL = (
         r"https://github.com/ModOrganizer2/modorganizer-basic_games/wiki/"
         "Game:-The-Binding-of-Isaac:-Rebirth"

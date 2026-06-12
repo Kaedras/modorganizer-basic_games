@@ -38,12 +38,6 @@ def replace_variables(value: str, game: BasicGame) -> str:
     if value.find("%GAME_PATH%") != -1:
         value = value.replace("%GAME_PATH%", game.gameDirectory().absolutePath())
 
-    if value.find("%GENERIC_CONFIG_LOCATION%") != -1:
-        value = value.replace("%GENERIC_CONFIG_LOCATION%", game.genericConfigLocation())
-
-    if value.find("%GENERIC_DATA_LOCATION%") != -1:
-        value = value.replace("%GENERIC_DATA_LOCATION%", game.genericDataLocation())
-
     return value
 
 

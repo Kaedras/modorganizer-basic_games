@@ -36,9 +36,7 @@ class Witcher2Game(BasicGame):
     GameDataPath = "CookedPC"
     GameSaveExtension = "sav"
     GameDocumentsDirectory = "%DOCUMENTS%/witcher 2/Config"
-    GameDocumentsDirectoryLinux = (
-        "%GENERIC_DATA_LOCATION%/cdprojektred/witcher2/GameDocuments/Witcher 2/config"
-    )
+    GameDocumentsDirectoryLinux = "%USERPROFILE%/.local/share/cdprojektred/witcher2/GameDocuments/Witcher 2/config"
     GameSavesDirectory = "%GAME_DOCUMENTS%/../gamesaves"
 
     def init(self, organizer: mobase.IOrganizer):
