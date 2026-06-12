@@ -298,8 +298,10 @@ class ValheimGame(BasicGame):
     GameNexusId = 3667
     GameSteamId = [892970, 896660, 1223920]
     GameBinary = "valheim.exe"
+    GameBinaryLinux = "valheim.x86_64"
     GameDataPath = ""
-    GameSavesDirectory = r"%USERPROFILE%/AppData/LocalLow/IronGate/Valheim"
+    GameSavesDirectory = "%USERPROFILE%/AppData/LocalLow/IronGate/Valheim"
+    GameSavesDirectoryLinux = "%USERPROFILE%/.config/unity3d/IronGate/Valheim"
     GameSupportURL = (
         r"https://github.com/ModOrganizer2/modorganizer-basic_games/wiki/Game:-Valheim"
     )

@@ -6,7 +6,7 @@ from enum import IntEnum, auto
 from pathlib import Path
 from typing import cast
 
-from PyQt6.QtCore import QDir, QFileInfo, QStandardPaths
+from PyQt6.QtCore import QDir, QFileInfo
 from PyQt6.QtWidgets import QMainWindow, QTabWidget, QWidget
 
 import mobase
@@ -82,12 +82,9 @@ class OblivionRemasteredGame(
     GameBinary = "OblivionRemastered.exe"
     GameDataPath = r"%GAME_PATH%/OblivionRemastered/Content/Dev/ObvData/Data"
     GameDocumentsDirectory = r"%GAME_PATH%/OblivionRemastered/Content/Dev/ObvData"
-    UserHome = QStandardPaths.writableLocation(
-        QStandardPaths.StandardLocation.HomeLocation
-    )
     # Oblivion Remastered does not use the expanded Documents path but instead always uses the
     # base user directory path, even when this disagrees with Windows.
-    MyDocumentsDirectory = rf"{UserHome}/Documents/My Games/{GameName}"
+    MyDocumentsDirectory = rf"%USERPROFILE%/Documents/My Games/{GameName}"
     GameSavesDirectory = rf"{MyDocumentsDirectory}/Saved/SaveGames"
     GameSaveExtension = "sav"
     GameSupportURL = (

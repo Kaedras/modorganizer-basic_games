@@ -38,7 +38,9 @@ class SlayTheSpire2Game(BasicGame):
     GameNexusId = 8916
     GameSteamId = 2868840
     GameBinary = "SlayTheSpire2.exe"
+    GameBinaryLinux = "SlayTheSpire2"
     GameDataPath = "mods"
+    # todo: figure out linux save game location
     GameDocumentsDirectory = "%USERPROFILE%/AppData/Roaming/SlayTheSpire2"
 
     def init(self, organizer: mobase.IOrganizer) -> bool:

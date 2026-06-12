@@ -34,6 +34,7 @@ class KerbalSpaceProgramGame(BasicGame):
     GameNexusName = "kerbalspaceprogram"
     GameSteamId = [220200, 283740, 982970]
     GameBinary = "KSP_x64.exe"
+    GameBinaryLinux = "KSP.x86_64"
     GameDataPath = "GameData"
     GameSavesDirectory = "%GAME_PATH%/saves"
     GameSaveExtension = "sfs"

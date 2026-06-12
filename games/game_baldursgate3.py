@@ -118,6 +118,10 @@ class BG3Game(BasicGame, bg3_file_mapper.BG3FileMapper):
                 "Larian Launcher",
                 self.gameDirectory().absoluteFilePath(self.getLauncherName()),
             ),
+            mobase.ExecutableInfo(
+                self.gameName(),
+                self.gameDirectory().absoluteFilePath("bin/bg3"),
+            ),
         ]
 
     def executableForcedLoads(self) -> list[mobase.ExecutableForcedLoadSetting]:

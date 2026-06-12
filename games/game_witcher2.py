@@ -29,11 +29,16 @@ class Witcher2Game(BasicGame):
     # GameNexusId = 952
     GameSteamId = 20920
     GameGogId = 1207658930
-    GameLauncher = "Launcher.exe"
+    GameLauncher = "launcher.exe"
+    GameLauncherLinux = "launcher"
     GameBinary = "bin/witcher2.exe"
+    GameBinaryLinux = "witcher2"
     GameDataPath = "CookedPC"
     GameSaveExtension = "sav"
     GameDocumentsDirectory = "%DOCUMENTS%/witcher 2/Config"
+    GameDocumentsDirectoryLinux = (
+        "%GENERIC_DATA_LOCATION%/cdprojektred/witcher2/GameDocuments/Witcher 2/config"
+    )
     GameSavesDirectory = "%GAME_DOCUMENTS%/../gamesaves"
 
     def init(self, organizer: mobase.IOrganizer):

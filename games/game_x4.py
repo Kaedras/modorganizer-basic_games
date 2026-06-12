@@ -10,7 +10,7 @@ class X4FoundationsGame(BasicGame):
     GameShortName = "x4foundations"
 
     GameDocumentsDirectory = "%DOCUMENTS%/Egosoft/X4"
-    GameDocumentsDirectoryLinux = "%CONFIG_LOCATION%/Egosoft/X4"
+    GameDocumentsDirectoryLinux = "%USERPROFILE%/.config/EgoSoft/X4"
     GameBinary = "x4.exe"
     GameBinaryLinux = "testandlaunch"
     GameDataPath = "extensions"

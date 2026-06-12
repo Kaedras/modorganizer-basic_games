@@ -68,7 +68,7 @@ class Witcher1Game(BasicGame):
     GameNexusId = 150
     GameSteamId = 20900
     GameGogId = 1207658924
-    GameBinary = "System/witcher.exe"
+    GameBinary = "system/witcher.exe"
     GameDataPath = "Data"
     GameSaveExtension = "TheWitcherSave"
     GameDocumentsDirectory = "%DOCUMENTS%/The Witcher"

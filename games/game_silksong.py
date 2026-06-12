@@ -77,10 +77,14 @@ class SilksongGame(BasicGame):
     GameShortName = "hollowknightsilksong"  # Match the error message
     GameNexusName = "hollowknightsilksong"
     GameSteamId = 1030300
-    GameBinary = r"Hollow Knight Silksong.exe"
+    GameBinary = "Hollow Knight Silksong.exe"
+    GameBinaryLinux = "Hollow Knight Silksong"
     GameDataPath = ""
     GameSavesDirectory = (
         r"%USERPROFILE%/AppData/LocalLow/Team Cherry/Hollow Knight Silksong"
+    )
+    GameSavesDirectoryLinux = (
+        "%USERPROFILE%/.config/unity3d/Team Cherry/Hollow Knight Silksong"
     )
     GameSupportURL = (
         r"https://github.com/ModOrganizer2/modorganizer-basic_games/wiki/"

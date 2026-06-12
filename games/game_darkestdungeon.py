@@ -168,6 +168,7 @@ class DarkestDungeonGame(BasicGame):
     GameSteamId = 262060
     GameGogId = 1450711444
     GameBinary = "_windows/win64/Darkest.exe"
+    GameBinaryLinux = "_linux/darkest.bin.x86_64"
     GameDataPath = ""
     GameDocumentsDirectory = "%DOCUMENTS%/Darkest"
     GameSavesDirectory = "%GAME_DOCUMENTS%"

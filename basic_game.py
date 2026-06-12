@@ -242,6 +242,8 @@ class BasicGameMappings:
         binaryNameLinux: BasicGameMapping[str]
         launcherNameLinux: BasicGameMapping[str]
         documentsDirectoryLinux: BasicGameMapping[QDir]
+        dataDirectoryLinux: BasicGameMapping[str]
+        savesDirectoryLinux: BasicGameMapping[QDir]
 
     @staticmethod
     def _default_documents_directory(game: BasicGame):
@@ -399,7 +401,7 @@ class BasicGameMappings:
             self.launcherNameLinux = BasicGameMapping(
                 game,
                 "GameLauncherLinux",
-                "getLauncherName",
+                "getLauncherNameLinux",
                 default=lambda g: "",
             )
             self.documentsDirectoryLinux = BasicGameMapping(
@@ -408,6 +410,19 @@ class BasicGameMappings:
                 "documentsDirectoryLinux",
                 apply_fn=lambda s: QDir(s) if isinstance(s, str) else s,
                 default=lambda g: self.documentsDirectory.get(),
+            )
+            self.dataDirectoryLinux = BasicGameMapping(
+                game,
+                "GameDataPathLinux",
+                "dataDirectoryLinux",
+                default=lambda g: self.dataDirectory.get(),
+            )
+            self.savesDirectoryLinux = BasicGameMapping(
+                game,
+                "GameSavesDirectoryLinux",
+                "savesDirectoryLinux",
+                apply_fn=lambda s: QDir(s) if isinstance(s, str) else s,
+                default=lambda g: self.savesDirectory.get(),
             )
 
 
@@ -616,7 +631,7 @@ class BasicGame(mobase.IPluginGame):
 
     def getLauncherName(self) -> str:
         if sys.platform != "win32" and self._isNativeLinuxVersion:
-            return self._mappings.launcherNameLinux.get()
+            return self.getLauncherNameLinux()
         return self._mappings.launcherName.get()
 
     def getSupportURL(self) -> str:
@@ -690,6 +705,8 @@ class BasicGame(mobase.IPluginGame):
         return QDir(self._gamePath)
 
     def dataDirectory(self) -> QDir:
+        if sys.platform != "win32" and self._isNativeLinuxVersion:
+            return self.dataDirectoryLinux()
         return QDir(
             self.gameDirectory().absoluteFilePath(self._mappings.dataDirectory.get())
         )
@@ -725,10 +742,12 @@ class BasicGame(mobase.IPluginGame):
 
     def documentsDirectory(self) -> QDir:
         if sys.platform != "win32" and self._isNativeLinuxVersion:
-            return self._mappings.documentsDirectoryLinux.get()
+            return self.documentsDirectoryLinux()
         return self._mappings.documentsDirectory.get()
 
     def savesDirectory(self) -> QDir:
+        if sys.platform != "win32" and self._isNativeLinuxVersion:
+            return self.savesDirectoryLinux()
         return self._mappings.savesDirectory.get()
 
     # helper functions
@@ -804,3 +823,18 @@ class BasicGame(mobase.IPluginGame):
             return QStandardPaths.writableLocation(
                 QStandardPaths.StandardLocation.HomeLocation
             )
+
+        def binaryNameLinux(self) -> str:
+            return self._mappings.binaryNameLinux.get()
+
+        def getLauncherNameLinux(self) -> str:
+            return self._mappings.launcherNameLinux.get()
+
+        def dataDirectoryLinux(self) -> QDir:
+            return QDir(self._mappings.dataDirectoryLinux.get())
+
+        def documentsDirectoryLinux(self) -> QDir:
+            return self._mappings.documentsDirectoryLinux.get()
+
+        def savesDirectoryLinux(self) -> QDir:
+            return self._mappings.savesDirectoryLinux.get()

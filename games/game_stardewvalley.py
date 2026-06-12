@@ -36,7 +36,7 @@ class StardewValleyGame(BasicGame):
     GameBinaryLinux = "StardewValley"
     GameDataPath = "Mods"
     GameDocumentsDirectory = "%DOCUMENTS%/StardewValley"
-    GameDocumentsDirectoryLinux = "%GENERIC_CONFIG_LOCATION%/StardewValley"
+    GameDocumentsDirectoryLinux = "%USERPROFILE%/.config/StardewValley"
     GameSavesDirectory = "%GAME_DOCUMENTS%/Saves"
     GameSupportURL = (
         r"https://github.com/ModOrganizer2/modorganizer-basic_games/wiki/"
