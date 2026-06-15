@@ -256,7 +256,9 @@ class BasicGameMappings:
             if qdir.exists():
                 return qdir
 
-        # Return a QDir pointing to a non-existing path because the default QDir constructor points to the current workdir, which can be $HOME on linux and causes MO to freeze as it can contain millions of files
+        # Return a QDir pointing to a non-existing path because the default QDir constructor points to
+        # the current workdir, which can be $HOME on linux and causes MO to freeze as it can contain millions of files.
+        # $HOME on the device this comment was written on: 4.1 million files / 927 GiB
         # TODO: check if this change causes issues
         return QDir("/INVALID")
 
