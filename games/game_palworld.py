@@ -1,3 +1,5 @@
+from PyQt6.QtCore import QFileInfo
+
 import mobase
 
 from ..basic_features import BasicModDataChecker, GlobPatterns
@@ -23,3 +25,15 @@ class PalworldGame(BasicGame):
             BasicModDataChecker(GlobPatterns(valid=["*.pak"], ignore=["*.txt"]))
         )
         return True
+
+    def executables(self):
+        return [
+            mobase.ExecutableInfo(
+                self.gameName(),
+                QFileInfo(self.gameDirectory().absoluteFilePath(self.binaryName())),
+            ),
+            mobase.ExecutableInfo(
+                f"{self.gameName()} (DirectX 12)",
+                QFileInfo(self.gameDirectory().absoluteFilePath(self.binaryName())),
+            ).withArgument("-dx12"),
+        ]
