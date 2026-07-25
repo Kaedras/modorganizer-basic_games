@@ -827,7 +827,11 @@ class BasicGame(mobase.IPluginGame):
             return self._mappings.launcherNameLinux.get()
 
         def dataDirectoryLinux(self) -> QDir:
-            return QDir(self._mappings.dataDirectoryLinux.get())
+            return QDir(
+                self.gameDirectory().absoluteFilePath(
+                    self._mappings.dataDirectoryLinux.get()
+                )
+            )
 
         def documentsDirectoryLinux(self) -> QDir:
             return self._mappings.documentsDirectoryLinux.get()
