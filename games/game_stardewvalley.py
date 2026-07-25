@@ -61,9 +61,6 @@ class StardewValleyGame(BasicGame):
             ),
             # linux executables
             mobase.ExecutableInfo(
-                "SMAPI", QFileInfo(self.gameDirectory(), "StardewModdingAPI")
-            ),
-            mobase.ExecutableInfo(
                 "Stardew Valley", QFileInfo(self.gameDirectory(), "StardewValley")
             ),
         ]
